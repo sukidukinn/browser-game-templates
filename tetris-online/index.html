@@ -25,27 +25,75 @@
   </main>
 
   <section id="online-panel" class="online-panel" hidden>
-    <div class="online-head"><h2>ONLINE DEBUG / SUBMIT</h2><button id="close-online" class="small-btn">×</button></div>
-    <p class="muted">Dキーで開閉。Supabase通信はSend/Refresh時だけ行います。</p>
-    <div class="snapshot-grid">
-      <span>Score <b id="debug-score">0</b></span><span>Lines <b id="debug-lines">0</b></span>
-      <span>Level <b id="debug-level">1</b></span><span>Time <b id="debug-time">0:00</b></span>
+    <div class="online-head">
+      <h2>ONLINE DEBUG / SUBMIT</h2>
+      <button id="close-online" class="small-btn">×</button>
     </div>
-    <label>表示名 <input id="player-name" maxlength="32" placeholder="Anonymous" /></label>
-    <div class="auth-row"><span id="auth-status">未ログイン</span><button id="github-login" class="small-btn">GitHub Login</button><button id="logout" class="small-btn" hidden>Logout</button></div>
-    <p id="login-note" class="muted">コメントと誘導URLはGitHubログイン時のみ送信できます。</p>
-    <label>コメント <textarea id="comment" maxlength="160" disabled placeholder="ログインすると入力できます"></textarea></label>
-    <label>誘導URL <input id="referral-url" type="url" disabled placeholder="https://example.com/" /></label>
-    <button id="send-score" class="primary">SEND CURRENT RESULT</button>
+    <p class="muted">Dキーで開閉。ここに表示する値はゲーム本体とは独立して自由に編集できます。通信はSend/Refresh時だけです。</p>
+
+    <button id="copy-game-state" class="copy-btn">現在のゲーム値をデバッグ欄へコピー</button>
+
+    <div class="debug-form">
+      <label>表示名
+        <input id="player-name" maxlength="32" value="DebugPlayer" />
+      </label>
+
+      <div class="debug-row">
+        <span>Score</span>
+        <button type="button" class="step-btn" data-target="debug-score" data-delta="-100">−100</button>
+        <input id="debug-score" type="number" min="0" max="100000000" value="0" />
+        <button type="button" class="step-btn" data-target="debug-score" data-delta="100">+100</button>
+      </div>
+
+      <div class="debug-row">
+        <span>Lines</span>
+        <button type="button" class="step-btn" data-target="debug-lines" data-delta="-1">−1</button>
+        <input id="debug-lines" type="number" min="0" max="1000000" value="0" />
+        <button type="button" class="step-btn" data-target="debug-lines" data-delta="1">+1</button>
+      </div>
+
+      <div class="debug-row">
+        <span>Level</span>
+        <button type="button" class="step-btn" data-target="debug-level" data-delta="-1">−1</button>
+        <input id="debug-level" type="number" min="1" max="100000" value="1" />
+        <button type="button" class="step-btn" data-target="debug-level" data-delta="1">+1</button>
+      </div>
+
+      <div class="debug-row">
+        <span>Time</span>
+        <button type="button" class="step-btn" data-target="debug-time" data-delta="-1">−1秒</button>
+        <input id="debug-time" type="text" value="0:00" inputmode="numeric" placeholder="m:ss または秒" />
+        <button type="button" class="step-btn" data-target="debug-time" data-delta="1">+1秒</button>
+      </div>
+
+      <label>コメント
+        <textarea id="comment" maxlength="160" placeholder="ログイン不要・最大160文字"></textarea>
+      </label>
+      <label>誘導URL
+        <input id="referral-url" type="url" placeholder="https://example.com/" />
+      </label>
+    </div>
+
+    <p class="muted">ランキング順: Scoreが高いほど上位。同ScoreならTimeが短い方を上位にします。現在はコメント＋URLもログイン不要です。</p>
+    <button id="send-score" class="primary">SEND DEBUG RESULT</button>
     <p id="online-status" class="status-line"></p>
 
     <div class="rank-tools">
       <h3>Ranking</h3>
-      <select id="rank-period"><option value="week">今週</option><option value="month">今月</option><option value="all">歴代</option></select>
+      <select id="rank-period">
+        <option value="week">今週</option>
+        <option value="month">今月</option>
+        <option value="all">歴代</option>
+      </select>
       <button id="refresh-ranking" class="small-btn">Refresh</button>
     </div>
     <p id="my-rank">Send後に今回の順位を表示します。</p>
-    <div class="table-wrap"><table><thead><tr><th>#</th><th>Player</th><th>Score</th><th>Time</th></tr></thead><tbody id="ranking-body"></tbody></table></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Player</th><th>Score</th><th>Time</th><th>Lines</th><th>Lv</th></tr></thead>
+        <tbody id="ranking-body"></tbody>
+      </table>
+    </div>
   </section>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

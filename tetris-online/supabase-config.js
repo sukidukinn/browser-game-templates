@@ -1,5 +1,5 @@
 window.TETRIS_ONLINE_CONFIG = {
-  supabaseUrl: 'https://nnkpbwiugwulouyfqire.supabase.co',
-  supabasePublishableKey: 'sb_publishable_nExEZ1AWEPAZBYjFlrWTrQ_iT-2IHLq',
+  supabaseUrl: 'https://YOUR_PROJECT_REF.supabase.co',
+  supabasePublishableKey: 'YOUR_PUBLISHABLE_KEY',
   gameSlug: 'tetris-online'
 };

@@ -13,7 +13,7 @@ create table if not exists public.game_scores (
 );
 
 create index if not exists game_scores_game_created_idx on public.game_scores (game_slug, created_at desc);
-create index if not exists game_scores_game_score_idx on public.game_scores (game_slug, score desc);
+create index if not exists game_scores_game_score_time_idx on public.game_scores (game_slug, score desc, play_time_ms asc);
 
 alter table public.game_scores enable row level security;
 revoke all on table public.game_scores from anon, authenticated;
@@ -26,23 +26,23 @@ on public.game_scores for select
 to anon, authenticated
 using (true);
 
--- Signed-out users may submit scores, but cannot attach comments or referral URLs.
+-- DEBUG MODE: signed-out users may submit all public fields, including comment and URL.
+-- user_id must remain null for anonymous submissions.
 drop policy if exists "game_scores_anon_insert" on public.game_scores;
 create policy "game_scores_anon_insert"
 on public.game_scores for insert
 to anon
 with check (
   user_id is null
-  and comment is null
-  and referral_url is null
+  and (comment is null or char_length(comment) <= 160)
+  and (referral_url is null or (char_length(referral_url) <= 500 and referral_url ~ '^https?://'))
 );
 
--- Signed-in users may submit only rows owned by their own auth user id.
+-- Keep authenticated insert available for future login restoration.
 drop policy if exists "game_scores_auth_insert" on public.game_scores;
 create policy "game_scores_auth_insert"
 on public.game_scores for insert
 to authenticated
 with check (
-  auth.uid() is not null
-  and user_id = auth.uid()
+  user_id is null or user_id = auth.uid()
 );
