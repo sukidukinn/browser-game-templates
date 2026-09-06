@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tetris Online Debug Template</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <section>
+      <h1>Tetris Online</h1>
+      <p class="help">← → 移動 / ↑ 回転 / ↓ ソフトドロップ / Space ハードドロップ / R リスタート / <strong>D オンライン送信パネル</strong></p>
+      <canvas id="game" width="300" height="600" aria-label="Tetris game"></canvas>
+    </section>
+    <aside class="panel">
+      <h2>STATUS</h2>
+      <div>Score <strong id="score">0</strong></div>
+      <div>Lines <strong id="lines">0</strong></div>
+      <div>Level <strong id="level">1</strong></div>
+      <div>High <strong id="high">0</strong></div>
+      <button id="restart">Restart</button>
+      <p id="message"></p>
+    </aside>
+  </main>
+
+  <section id="online-panel" class="online-panel" hidden>
+    <div class="online-head"><h2>ONLINE DEBUG / SUBMIT</h2><button id="close-online" class="small-btn">×</button></div>
+    <p class="muted">Dキーで開閉。Supabase通信はSend/Refresh時だけ行います。</p>
+    <div class="snapshot-grid">
+      <span>Score <b id="debug-score">0</b></span><span>Lines <b id="debug-lines">0</b></span>
+      <span>Level <b id="debug-level">1</b></span><span>Time <b id="debug-time">0:00</b></span>
+    </div>
+    <label>表示名 <input id="player-name" maxlength="32" placeholder="Anonymous" /></label>
+    <div class="auth-row"><span id="auth-status">未ログイン</span><button id="github-login" class="small-btn">GitHub Login</button><button id="logout" class="small-btn" hidden>Logout</button></div>
+    <p id="login-note" class="muted">コメントと誘導URLはGitHubログイン時のみ送信できます。</p>
+    <label>コメント <textarea id="comment" maxlength="160" disabled placeholder="ログインすると入力できます"></textarea></label>
+    <label>誘導URL <input id="referral-url" type="url" disabled placeholder="https://example.com/" /></label>
+    <button id="send-score" class="primary">SEND CURRENT RESULT</button>
+    <p id="online-status" class="status-line"></p>
+
+    <div class="rank-tools">
+      <h3>Ranking</h3>
+      <select id="rank-period"><option value="week">今週</option><option value="month">今月</option><option value="all">歴代</option></select>
+      <button id="refresh-ranking" class="small-btn">Refresh</button>
+    </div>
+    <p id="my-rank">Send後に今回の順位を表示します。</p>
+    <div class="table-wrap"><table><thead><tr><th>#</th><th>Player</th><th>Score</th><th>Time</th></tr></thead><tbody id="ranking-body"></tbody></table></div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase-config.js"></script>
+  <script src="./game.js"></script>
+  <script src="./online.js"></script>
+</body>
+</html>
