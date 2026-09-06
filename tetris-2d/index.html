@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2D Tetris Template</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <section>
+      <h1>2D Tetris Template</h1>
+      <p class="help">← → 移動 / ↑ 回転 / ↓ ソフトドロップ / Space ハードドロップ / R リスタート</p>
+      <canvas id="game" width="300" height="600" aria-label="Tetris game"></canvas>
+    </section>
+    <aside class="panel">
+      <h2>STATUS</h2>
+      <div>Score <strong id="score">0</strong></div>
+      <div>Lines <strong id="lines">0</strong></div>
+      <div>Level <strong id="level">1</strong></div>
+      <div>High <strong id="high">0</strong></div>
+      <button id="restart">Restart</button>
+      <p id="message"></p>
+    </aside>
+  </main>
+  <script src="./game.js"></script>
+</body>
+</html>

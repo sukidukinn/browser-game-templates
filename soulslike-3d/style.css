@@ -1,0 +1,11 @@
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #050505; font-family: system-ui, sans-serif; }
+#game { width: 100%; height: 100%; display: block; }
+#hud { position: fixed; inset: 0; pointer-events: none; color: white; z-index: 10; }
+.bar { position: relative; width: 280px; height: 20px; margin: 16px 0 0 18px; border: 1px solid #999; background: #222; }
+.bar span { position: absolute; left: 7px; top: 1px; z-index: 2; font-size: 12px; text-shadow: 0 1px 2px black; }
+.bar i { display: block; height: 100%; width: 100%; background: #b23737; transition: width .08s linear; }
+.bar:nth-child(2) i { background: #4b9d63; }
+.enemy { display: none; position: fixed; left: 50%; bottom: 54px; transform: translateX(-50%); width: min(520px, 70vw); }
+.enemy i { background: #7f3042; }
+#message { position: fixed; top: 18px; left: 50%; transform: translateX(-50%); font-size: 20px; text-shadow: 0 2px 4px #000; }
+.help { position: fixed; bottom: 16px; left: 18px; right: 18px; color: #ddd; font-size: 13px; text-shadow: 0 1px 3px #000; }
